@@ -2,6 +2,10 @@
 
 Bạn đang đói nhưng không biết ăn gì? Chúng tôi giúp bạn quyết định!
 
+## 🌐 Live Demo
+
+**[🍜 Try it now!](https://whattoeat-nine.vercel.app/)**
+
 ## ✨ Tính năng
 
 - 🎯 Gợi ý món ăn ngẫu nhiên theo loại bạn chọn
