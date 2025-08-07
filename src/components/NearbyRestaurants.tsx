@@ -3,30 +3,24 @@ import { DollarSign, MapPin, Navigation, Star } from 'lucide-react';
 import { useState } from 'react';
 import { useGoogleMaps } from '../hooks/useGoogleMaps';
 
-interface NearbyRestaurantsProps {
-  currentFood: string | null;
-}
-
-export const NearbyRestaurants = ({ currentFood }: NearbyRestaurantsProps) => {
+export const NearbyRestaurants = () => {
   const { restaurants, loading, error, searchNearbyRestaurants, openInGoogleMaps } = useGoogleMaps();
   const [showRestaurants, setShowRestaurants] = useState(false);
 
   const handleFindRestaurants = async () => {
-    if (!currentFood) return;
-    
     try {
       const location = await navigator.geolocation.getCurrentPosition(
         (position) => {
           searchNearbyRestaurants(
             { lat: position.coords.latitude, lng: position.coords.longitude },
-            currentFood
+            'restaurant'
           );
           setShowRestaurants(true);
         },
         (error) => {
           console.error('Error getting location:', error);
           // Fallback: search without location
-          searchNearbyRestaurants({ lat: 10.8231, lng: 106.6297 }, currentFood);
+          searchNearbyRestaurants({ lat: 10.8231, lng: 106.6297 }, 'restaurant');
           setShowRestaurants(true);
         }
       );
@@ -47,19 +41,19 @@ export const NearbyRestaurants = ({ currentFood }: NearbyRestaurantsProps) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card mt-6"
+      className="card mb-6"
     >
       <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 flex items-center">
         <MapPin className="w-5 h-5 mr-2 text-red-500" />
         Tìm quán ăn gần đây
       </h3>
 
-      {currentFood && !showRestaurants && (
+      {!showRestaurants && (
         <button
           onClick={handleFindRestaurants}
           className="btn-primary w-full"
         >
-          Tìm quán ăn {currentFood}
+          🍽️ Tìm quán ăn gần đây
         </button>
       )}
 
