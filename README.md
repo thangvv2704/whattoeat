@@ -1,12 +1,33 @@
 # 🍜 WhatToEat.vn
 
-Bạn đang đói nhưng không biết ăn gì? Chúng tôi giúp bạn quyết định!
+Ứng dụng gợi ý món ăn thông minh giúp bạn quyết định "Hôm nay ăn gì?" một cách dễ dàng và thú vị!
 
 ## 🌐 Live Demo
-
 **[🍜 Try it now!](https://whattoeat-nine.vercel.app/)**
 
-## ✨ Tính năng
+## 📱 Demo Screenshots
+
+### 🏠 Main Interface
+![WhatToEat.vn Main Interface](./docs/images/main-interface.png)
+
+*Giao diện chính của ứng dụng WhatToEat.vn - Clean, modern và dễ sử dụng trên mobile*
+
+### 🌤️ Weather Suggestions
+![Weather Suggestions](./docs/images/weather-suggestions.png)
+
+*Tính năng gợi ý món ăn theo thời tiết*
+
+### 🍽️ Restaurant Finder
+![Restaurant Finder](./docs/images/restaurant-finder.png)
+
+*Tìm kiếm quán ăn gần đây với Google Maps integration*
+
+### ❤️ Favorites
+![Favorites](./docs/images/favorites.png)
+
+*Quản lý món ăn yêu thích*
+
+## ✨ Features
 
 - 🎯 Gợi ý món ăn ngẫu nhiên theo loại bạn chọn
 - 🎨 Giao diện đẹp mắt với animation mượt mà
