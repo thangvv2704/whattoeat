@@ -20,33 +20,28 @@ export const NearbyRestaurants = ({ onClose, onFoodSelect, onChooseFood }: Nearb
     setShowAllRestaurants(false); // Reset when searching again
     
     try {
-      const location = await navigator.geolocation.getCurrentPosition(
+      await navigator.geolocation.getCurrentPosition(
         (position) => {
           console.log('Location success:', position.coords);
           searchNearbyRestaurants(
-            { lat: position.coords.latitude, lng: position.coords.longitude },
-            'restaurant'
+            { lat: position.coords.latitude, lng: position.coords.longitude }
           );
         },
         (error) => {
           console.error('Geolocation error:', error);
           // Fallback: search without location
-          searchNearbyRestaurants({ lat: 10.8231, lng: 106.6297 }, 'restaurant');
+          searchNearbyRestaurants({ lat: 10.8231, lng: 106.6297 });
         }
       );
     } catch (err) {
       console.error('Error:', err);
       // Fallback: search without location
-      searchNearbyRestaurants({ lat: 10.8231, lng: 106.6297 }, 'restaurant');
+      searchNearbyRestaurants({ lat: 10.8231, lng: 106.6297 });
     }
   };
 
   const getPriceLevel = (level: number) => {
     return '$'.repeat(level);
-  };
-
-  const getStars = (rating: number) => {
-    return '★'.repeat(Math.floor(rating)) + '☆'.repeat(5 - Math.floor(rating));
   };
 
   const foodRecommendations = getFoodRecommendations(restaurants);

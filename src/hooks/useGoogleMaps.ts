@@ -42,7 +42,7 @@ export const useGoogleMaps = () => {
   };
 
   // Search nearby restaurants using Google Places API
-  const searchNearbyRestaurants = async (location: Location, foodType: string) => {
+  const searchNearbyRestaurants = async (location: Location) => {
     setLoading(true);
     setError(null);
 
@@ -240,21 +240,19 @@ export const useGoogleMaps = () => {
   const getCurrentLocation = (): Promise<Location> => {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject(new Error('Trình duyệt không hỗ trợ định vị'));
+        reject(new Error('Geolocation is not supported by this browser.'));
         return;
       }
-
+      
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log('Location obtained:', position.coords);
           resolve({
             lat: position.coords.latitude,
             lng: position.coords.longitude
           });
         },
         (error) => {
-          console.error('Geolocation error:', error);
-          reject(new Error('Không thể lấy vị trí hiện tại'));
+          reject(new Error(`Geolocation error: ${error.message}`));
         }
       );
     });

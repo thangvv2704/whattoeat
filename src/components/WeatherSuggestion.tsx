@@ -24,7 +24,6 @@ const VIETNAM_CITIES = [
 export const WeatherSuggestion = ({ onCategorySelect, onClose }: WeatherSuggestionProps) => {
   const { weather, loading, error, loadWeather, loadWeatherForCity, getWeatherSuggestions } = useWeather();
   const [showFallback, setShowFallback] = useState(false);
-  const [selectedCity, setSelectedCity] = useState('');
 
   const getWeatherIcon = (condition: string) => {
     switch (condition) {
@@ -103,7 +102,6 @@ export const WeatherSuggestion = ({ onCategorySelect, onClose }: WeatherSuggesti
   };
 
   const handleCitySelect = async (city: string) => {
-    setSelectedCity(city);
     try {
       await loadWeatherForCity(city);
       setShowFallback(false);
