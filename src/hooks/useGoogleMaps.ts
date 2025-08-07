@@ -50,7 +50,7 @@ export const useGoogleMaps = () => {
       // If no API key, fallback to mock data
       if (!GOOGLE_PLACES_API_KEY || GOOGLE_PLACES_API_KEY === 'YOUR_GOOGLE_PLACES_API_KEY') {
         console.log('Using mock data - no Google Places API key provided');
-        await searchMockRestaurants(location);
+        await searchMockRestaurants();
         return;
       }
 
@@ -108,14 +108,14 @@ export const useGoogleMaps = () => {
       
       // Fallback to mock data if API fails
       console.log('Falling back to mock data...');
-      await searchMockRestaurants(location);
+      await searchMockRestaurants();
     } finally {
       setLoading(false);
     }
   };
 
   // Mock restaurant search as fallback
-  const searchMockRestaurants = async (location: Location) => {
+  const searchMockRestaurants = async () => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));
 
