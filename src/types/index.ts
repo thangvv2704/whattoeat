@@ -19,4 +19,10 @@ export interface CategoryInfo {
   name: string;
   emoji: string;
   description: string;
+}
+
+export interface FavoriteFood {
+  id: string;
+  foodId: string;
+  addedAt: Date;
 } 

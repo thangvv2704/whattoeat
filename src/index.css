@@ -6,16 +6,28 @@
   }
   
   body {
-    @apply bg-gradient-to-br from-orange-50 to-yellow-50 min-h-screen;
+    @apply bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-gray-900 dark:to-gray-800 min-h-screen transition-colors duration-300;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105;
+    @apply bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 dark:from-orange-600 dark:to-red-600 dark:hover:from-orange-700 dark:hover:to-red-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105;
   }
   
   .card {
-    @apply bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300;
+    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 p-6 hover:shadow-xl dark:hover:shadow-gray-900/70 transition-all duration-300 border border-gray-100 dark:border-gray-700;
+  }
+
+  .category-card {
+    @apply p-4 rounded-xl border-2 transition-all duration-300;
+  }
+
+  .category-card-selected {
+    @apply border-orange-500 bg-orange-50 dark:bg-orange-900/20 shadow-lg;
+  }
+
+  .category-card-default {
+    @apply border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-orange-300 dark:hover:border-orange-400;
   }
 } 
