@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Cloud, CloudRain, Sun, Thermometer } from 'lucide-react';
+import { Cloud, CloudRain, MapPin, Sun, Thermometer } from 'lucide-react';
 import { useWeather } from '../hooks/useWeather';
 
 interface WeatherSuggestionProps {
@@ -11,24 +11,51 @@ export const WeatherSuggestion = ({ onCategorySelect }: WeatherSuggestionProps) 
 
   const getWeatherIcon = (condition: string) => {
     switch (condition) {
-      case 'rainy':
+      case 'rain':
+      case 'drizzle':
         return <CloudRain className="w-6 h-6 text-blue-500" />;
-      case 'cloudy':
+      case 'clouds':
+      case 'mist':
+      case 'fog':
         return <Cloud className="w-6 h-6 text-gray-500" />;
-      default:
+      case 'clear':
+      case 'sunny':
         return <Sun className="w-6 h-6 text-yellow-500" />;
+      default:
+        return <Cloud className="w-6 h-6 text-gray-500" />;
     }
+  };
+
+  const getWeatherDescription = (condition: string) => {
+    const descriptions: { [key: string]: string } = {
+      'clear': 'Trời quang',
+      'clouds': 'Có mây',
+      'rain': 'Mưa',
+      'drizzle': 'Mưa phùn',
+      'thunderstorm': 'Giông bão',
+      'snow': 'Tuyết',
+      'mist': 'Sương mù',
+      'fog': 'Sương mù',
+      'haze': 'Sương mù nhẹ',
+      'smoke': 'Khói mù',
+      'dust': 'Bụi',
+      'sand': 'Cát',
+      'ash': 'Tro',
+      'squall': 'Gió mạnh',
+      'tornado': 'Lốc xoáy'
+    };
+    return descriptions[condition] || condition;
   };
 
   const getWeatherAdvice = (weather: any) => {
     if (weather.isHot) {
-      return 'Trời nóng, nên ăn món mát và healthy!';
+      return 'Trời nóng, nên ăn món mát và healthy để giải nhiệt!';
     }
     if (weather.isCold) {
-      return 'Trời lạnh, nên ăn món nóng và bổ dưỡng!';
+      return 'Trời lạnh, nên ăn món nóng và bổ dưỡng để ấm bụng!';
     }
     if (weather.isRaining) {
-      return 'Trời mưa, nên ăn món nóng và ấm bụng!';
+      return 'Trời mưa, nên ăn món nóng và ấm bụng để thư giãn!';
     }
     return 'Thời tiết đẹp, ăn gì cũng ngon!';
   };
@@ -53,12 +80,18 @@ export const WeatherSuggestion = ({ onCategorySelect }: WeatherSuggestionProps) 
       </h3>
 
       {!weather && !loading && (
-        <button
-          onClick={loadWeather}
-          className="btn-primary w-full"
-        >
-          Kiểm tra thời tiết
-        </button>
+        <div className="text-center">
+          <button
+            onClick={loadWeather}
+            className="btn-primary w-full"
+          >
+            <MapPin className="w-4 h-4 mr-2 inline" />
+            Kiểm tra thời tiết hiện tại
+          </button>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+            Cho phép truy cập vị trí để lấy thông tin thời tiết chính xác
+          </p>
+        </div>
       )}
 
       {loading && (
@@ -70,29 +103,43 @@ export const WeatherSuggestion = ({ onCategorySelect }: WeatherSuggestionProps) 
 
       {error && (
         <div className="text-red-500 text-center py-4">
-          {error}
+          <p className="mb-2">{error}</p>
+          <button
+            onClick={loadWeather}
+            className="text-sm underline hover:no-underline"
+          >
+            Thử lại
+          </button>
         </div>
       )}
 
       {weather && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-lg">
             <div className="flex items-center">
               {getWeatherIcon(weather.condition)}
               <div className="ml-3">
-                <p className="font-semibold text-gray-800 dark:text-white">
+                <p className="font-semibold text-gray-800 dark:text-white text-lg">
                   {weather.temperature}°C
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
-                  {weather.condition}
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {getWeatherDescription(weather.condition)}
                 </p>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                {weather.isHot && '🔥 Nóng'}
+                {weather.isCold && '❄️ Lạnh'}
+                {weather.isRaining && '🌧️ Mưa'}
+                {!weather.isHot && !weather.isCold && !weather.isRaining && '😊 Dễ chịu'}
               </div>
             </div>
           </div>
 
-          <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-            <p className="text-gray-800 dark:text-white text-sm">
-              {getWeatherAdvice(weather)}
+          <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border-l-4 border-orange-500">
+            <p className="text-gray-800 dark:text-white text-sm font-medium">
+              💡 {getWeatherAdvice(weather)}
             </p>
           </div>
 
@@ -100,7 +147,7 @@ export const WeatherSuggestion = ({ onCategorySelect }: WeatherSuggestionProps) 
             onClick={handleWeatherSuggestion}
             className="btn-primary w-full"
           >
-            Gợi ý món ăn theo thời tiết
+            🍜 Gợi ý món ăn theo thời tiết
           </button>
         </div>
       )}
