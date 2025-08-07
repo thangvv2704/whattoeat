@@ -1,6 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Heart, Moon, RefreshCw, Share2, Star, Sun, Utensils } from 'lucide-react';
 import { useState } from 'react';
+import { NearbyRestaurants } from './components/NearbyRestaurants';
+import { WeatherSuggestion } from './components/WeatherSuggestion';
 import { categories, foods } from './data/foods';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useFavorites } from './hooks/useFavorites';
@@ -12,6 +14,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [showWeather, setShowWeather] = useState(false);
+  const [showRestaurants, setShowRestaurants] = useState(false);
   
   const { favorites, isFavorite, toggleFavorite } = useFavorites();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -31,6 +35,8 @@ function App() {
     setIsLoading(true);
     setShowResult(false);
     setShowFavorites(false);
+    setShowWeather(false);
+    setShowRestaurants(false);
     
     // Simulate loading
     setTimeout(() => {
@@ -65,6 +71,10 @@ function App() {
 
   const getFavoriteFoods = () => {
     return foods.filter(food => isFavorite(food.id));
+  };
+
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category as FoodCategory);
   };
 
   return (
@@ -108,6 +118,13 @@ function App() {
             Giúp bạn quyết định ăn gì hôm nay!
           </p>
         </motion.div>
+
+        {/* Weather Suggestion */}
+        <AnimatePresence>
+          {showWeather && (
+            <WeatherSuggestion onCategorySelect={handleCategorySelect} />
+          )}
+        </AnimatePresence>
 
         {/* Favorites Section */}
         <AnimatePresence>
@@ -188,29 +205,37 @@ function App() {
           </div>
         </motion.div>
 
-        {/* Generate Button */}
+        {/* Action Buttons */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center mb-8"
+          className="text-center mb-8 space-y-4"
         >
-          <button
-            onClick={handleGenerate}
-            disabled={isLoading}
-            className="btn-primary text-lg px-8 py-4 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              >
-                <RefreshCw className="inline-block w-6 h-6 mr-2" />
-              </motion.div>
-            ) : (
-              <Utensils className="inline-block w-6 h-6 mr-2" />
-            )}
-            {isLoading ? 'Đang chọn món...' : 'Chọn món ăn ngẫu nhiên'}
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => setShowWeather(!showWeather)}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+            >
+              🌤️ Gợi ý theo thời tiết
+            </button>
+            <button
+              onClick={handleGenerate}
+              disabled={isLoading}
+              className="btn-primary text-lg px-8 py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                >
+                  <RefreshCw className="inline-block w-6 h-6 mr-2" />
+                </motion.div>
+              ) : (
+                <Utensils className="inline-block w-6 h-6 mr-2" />
+              )}
+              {isLoading ? 'Đang chọn món...' : 'Chọn món ăn ngẫu nhiên'}
+            </button>
+          </div>
         </motion.div>
 
         {/* Result */}
@@ -276,6 +301,13 @@ function App() {
                 </div>
               </div>
             </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Nearby Restaurants */}
+        <AnimatePresence>
+          {showResult && currentFood && (
+            <NearbyRestaurants currentFood={currentFood.name} />
           )}
         </AnimatePresence>
 
